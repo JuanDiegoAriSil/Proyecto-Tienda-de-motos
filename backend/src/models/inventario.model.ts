@@ -3,7 +3,8 @@ import { pool } from '../config/database';
 
 export interface Inventario {
   id?: number;
-  producto: string;
+  producto_id: number;
+  producto?: string;
   cantidad: number;
   ubicacion?: string;
   fecha_actualizacion?: Date;
@@ -13,9 +14,20 @@ export class InventarioModel {
 
   // CONSULTAR TODO EL INVENTARIO
   static async obtenerTodos(): Promise<Inventario[]> {
-    const resultado = await pool.query<Inventario>(
-      'SELECT * FROM inventario ORDER BY id ASC'
-    );
+
+    const resultado = await pool.query<Inventario>(`
+      SELECT
+        i.id,
+        i.producto_id,
+        p.nombre AS producto,
+        i.cantidad,
+        i.ubicacion,
+        i.fecha_actualizacion
+      FROM inventario i
+      INNER JOIN productos p
+        ON p.id = i.producto_id
+      ORDER BY i.id ASC
+    `);
 
     return resultado.rows;
   }
@@ -25,88 +37,120 @@ export class InventarioModel {
     id: number
   ): Promise<Inventario | null> {
 
-    const resultado = await pool.query<Inventario>(
-      'SELECT * FROM inventario WHERE id = $1',
-      [id]
-    );
+    const resultado = await pool.query<Inventario>(`
+      SELECT
+        i.id,
+        i.producto_id,
+        p.nombre AS producto,
+        i.cantidad,
+        i.ubicacion,
+        i.fecha_actualizacion
+      FROM inventario i
+      INNER JOIN productos p
+        ON p.id = i.producto_id
+      WHERE i.id = $1::INTEGER
+    `, [id]);
 
     return resultado.rows[0] || null;
   }
 
-  // CREAR UN REGISTRO DE INVENTARIO
+  // CREAR REGISTRO DE INVENTARIO
   static async crear(
     registro: Inventario
   ): Promise<Inventario> {
 
-    const consulta = `
+    const resultado = await pool.query<Inventario>(`
       INSERT INTO inventario
-      (producto, cantidad, ubicacion, fecha_actualizacion)
-      VALUES ($1, $2, $3, NOW())
+      (
+        producto_id,
+        producto,
+        cantidad,
+        ubicacion,
+        fecha_actualizacion
+      )
+      SELECT
+        p.id,
+        p.nombre,
+        $2::INTEGER,
+        $3::TEXT,
+        NOW()
+      FROM productos p
+      WHERE p.id = $1::INTEGER
       RETURNING *
-    `;
-
-    const valores = [
-      registro.producto,
+    `, [
+      registro.producto_id,
       registro.cantidad,
       registro.ubicacion ?? ''
-    ];
+    ]);
 
-    const resultado = await pool.query<Inventario>(
-      consulta,
-      valores
-    );
+    const inventario = resultado.rows[0];
 
-    const nuevoRegistro = resultado.rows[0];
-
-    if (!nuevoRegistro) {
-      throw new Error('No se pudo crear el registro de inventario');
+    if (!inventario) {
+      throw new Error(
+        'No se pudo crear el inventario. Verifica el producto_id.'
+      );
     }
 
-    return nuevoRegistro;
+    return inventario;
   }
 
-  // ACTUALIZAR UN REGISTRO DE INVENTARIO
+  // ACTUALIZAR REGISTRO DE INVENTARIO
   static async actualizar(
     id: number,
     registro: Inventario
   ): Promise<Inventario | null> {
 
-    const consulta = `
-      UPDATE inventario
+    const resultado = await pool.query<Inventario>(`
+      UPDATE inventario i
       SET
-        producto = $1,
-        cantidad = $2,
-        ubicacion = $3,
+        producto_id = p.id,
+        producto = p.nombre,
+        cantidad = $2::INTEGER,
+        ubicacion = $3::TEXT,
         fecha_actualizacion = NOW()
-      WHERE id = $4
-      RETURNING *
-    `;
-
-    const valores = [
-      registro.producto,
+      FROM productos p
+      WHERE i.id = $4::INTEGER
+        AND p.id = $1::INTEGER
+      RETURNING i.*
+    `, [
+      registro.producto_id,
       registro.cantidad,
       registro.ubicacion ?? '',
       id
-    ];
-
-    const resultado = await pool.query<Inventario>(
-      consulta,
-      valores
-    );
+    ]);
 
     return resultado.rows[0] || null;
   }
 
-  // ELIMINAR UN REGISTRO DE INVENTARIO
+  // ELIMINAR REGISTRO DE INVENTARIO
   static async eliminar(
     id: number
   ): Promise<boolean> {
 
-    const resultado = await pool.query(
-      'DELETE FROM inventario WHERE id = $1 RETURNING id',
-      [id]
-    );
+    const resultado = await pool.query(`
+      DELETE FROM inventario
+      WHERE id = $1::INTEGER
+      RETURNING id
+    `, [id]);
 
     return (resultado.rowCount ?? 0) > 0;
   }
+  
+  // VERIFICAR SI UN PRODUCTO EXISTE
+  static async verificarProducto(
+    productoId: number
+  ): Promise<boolean> {
+
+    const resultado = await pool.query(
+      `
+        SELECT id
+        FROM productos
+        WHERE id = $1::INTEGER
+      `,
+      [productoId]
+    );
+
+    return resultado.rows.length > 0;
+  }
+
 }

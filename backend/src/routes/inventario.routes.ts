@@ -1,4 +1,6 @@
+
 import { Router } from 'express';
+
 import {
   obtenerInventario,
   obtenerRegistroInventarioPorId,
@@ -10,9 +12,13 @@ import {
 const router = Router();
 
 router.get('/', obtenerInventario);
+
 router.get('/:id', obtenerRegistroInventarioPorId);
+
 router.post('/', crearRegistroInventario);
+
 router.put('/:id', actualizarRegistroInventario);
+
 router.delete('/:id', eliminarRegistroInventario);
 
 export default router;

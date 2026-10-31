@@ -5,6 +5,7 @@ import clientesRoutes from './routes/clientes.routes';
 import productosRoutes from './routes/productos.routes';
 import inventarioRoutes from './routes/inventario.routes';
 import comprasRoutes from './routes/compras.routes';
+import ventasRoutes from './routes/ventas.routes';
 
 
 const app = express(); // llama lo que se va usar
@@ -29,6 +30,7 @@ app.use( // define la ruta de clientes es lo que se tiene (menu) y lo que se va 
 app.use('/api/v1/productos', productosRoutes);
 app.use('/api/v1/inventario', inventarioRoutes);
 app.use('/api/v1/compras', comprasRoutes);
+app.use('/api/v1/ventas', ventasRoutes);
 
 
 export default app; // si otra clase necesista
