@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { SalesServices } from '../../Services/sales-services';
+import { TableSales } from '../../Components/table-sales/table-sales';
 
 @Component({
-  imports: [],
+  imports: [TableSales],
+  standalone: true,
   selector: 'app-ventas',
   styleUrl: './ventas.css',
   templateUrl: './ventas.html',

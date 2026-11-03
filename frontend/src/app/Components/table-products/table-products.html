@@ -1,0 +1,62 @@
+
+<h2>Listado de productos</h2>
+
+<table mat-table
+       [dataSource]="daticos"
+       class="mat-elevation-z8">
+
+  <!-- ID -->
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef>ID</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.id }}
+    </td>
+  </ng-container>
+
+  <!-- NOMBRE -->
+  <ng-container matColumnDef="nombre">
+    <th mat-header-cell *matHeaderCellDef>Nombre</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.nombre }}
+    </td>
+  </ng-container>
+
+  <!-- DESCRIPCION -->
+  <ng-container matColumnDef="descripcion">
+    <th mat-header-cell *matHeaderCellDef>Descripción</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.descripcion }}
+    </td>
+  </ng-container>
+
+  <!-- MARCA -->
+  <ng-container matColumnDef="marca">
+    <th mat-header-cell *matHeaderCellDef>Marca</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.marca }}
+    </td>
+  </ng-container>
+
+  <!-- CATEGORIA -->
+  <ng-container matColumnDef="categoria">
+    <th mat-header-cell *matHeaderCellDef>Categoría</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.categoria }}
+    </td>
+  </ng-container>
+
+  <!-- PRECIO -->
+  <ng-container matColumnDef="precio">
+    <th mat-header-cell *matHeaderCellDef>Precio</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.precio }}
+    </td>
+  </ng-container>
+
+  <tr mat-header-row
+      *matHeaderRowDef="displayedColumns"></tr>
+
+  <tr mat-row
+      *matRowDef="let row; columns: displayedColumns"></tr>
+
+</table>

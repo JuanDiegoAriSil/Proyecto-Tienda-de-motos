@@ -15,7 +15,7 @@ export class ProductsServices {
     private readonly apiUrl = 'http://localhost:3000/api/v1/productos';
 
 
-getProducts(): Observable<any> {
+getProductos(): Observable<any> {
     return this.http.get(this.apiUrl);
 }
 
