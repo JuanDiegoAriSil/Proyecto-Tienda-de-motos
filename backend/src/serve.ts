@@ -5,19 +5,15 @@ dotenv.config();
 import app from './app';
 import { conectarDB } from './config/database';
 
-const PORT = process.env.PORT || 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
-// Función encargada de iniciar el servidor
 async function startServer(): Promise<void> {
   try {
-    // 1. Comprobar conexión con PostgreSQL
     await conectarDB();
 
-    // 2. Iniciar Express cuando la conexión sea exitosa
-    app.listen(PORT, () => {
-      console.log(
-        `API ejecutándose en http://localhost:${PORT}`
-      );
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log('PostgreSQL conectado correctamente');
+      console.log(`API ejecutándose en el puerto ${PORT}`);
     });
 
   } catch (error) {

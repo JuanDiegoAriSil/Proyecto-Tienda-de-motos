@@ -42,3 +42,14 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# Variables privadas
+.env
+.env.*
+!.env.example
+
+# Dependencias
+node_modules/
+
+# Compilaciones
+dist/
