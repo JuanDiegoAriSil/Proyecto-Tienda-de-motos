@@ -2,6 +2,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 
 export interface Cliente {
   id: number;
@@ -18,8 +19,7 @@ export interface Cliente {
 })
 export class ClientsServices {
 
-  private readonly apiUrl =
-    'http://localhost:3000/api/v1/clientes';
+  private readonly apiUrl = `${environment.apiUrl}/clientes`;
 
   constructor(private http: HttpClient) {}
 

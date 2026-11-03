@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 
 @Injectable({
@@ -12,7 +13,7 @@ export class ProductsServices {
 
     constructor(private http: HttpClient) { }
 
-    private readonly apiUrl = 'http://localhost:3000/api/v1/productos';
+    private readonly apiUrl = `${environment.apiUrl}/productos`;
 
 
 getProductos(): Observable<any> {

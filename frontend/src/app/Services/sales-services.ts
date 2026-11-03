@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 export class SalesServices {
     constructor(private http: HttpClient) { }
 
-    private readonly apiUrl = 'http://localhost:3000/api/v1/ventas';
+    private readonly apiUrl = `${environment.apiUrl}/ventas`;
 
 
 getSale(): Observable<any> {
