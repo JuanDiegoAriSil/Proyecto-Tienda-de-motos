@@ -1,41 +1,39 @@
-{
-  // Visit https://aka.ms/tsconfig to read more about this file
-  "compilerOptions": {
-    // File Layout
-    // "rootDir": "./src",
-    // "outDir": "./dist",
 
-    // Environment Settings
+{
+  "compilerOptions": {
+    // Carpetas del proyecto
+    "rootDir": "./src",
+    "outDir": "./dist",
+
+    // Configuración de Node.js
     "module": "commonjs",
     "target": "es2020",
     "types": ["node"],
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
 
-    // Other Outputs
+    // Archivos generados
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
 
-    // Stricter Typechecking Options
+    // Validaciones de TypeScript
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
-
-    // Style Options
-    // "noImplicitReturns": true,
-    // "noImplicitOverride": true,
-    // "noUnusedLocals": true,
-    // "noUnusedParameters": true,
-    // "noFallthroughCasesInSwitch": true,
-    // "noPropertyAccessFromIndexSignature": true,
-
-    // Recommended Options
     "strict": true,
+
+    // Otras configuraciones
     "jsx": "react-jsx",
     "verbatimModuleSyntax": false,
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
-    "skipLibCheck": true
-  }
+    "skipLibCheck": true,
+
+    // Permitir generar JavaScript
+    "noEmit": false
+  },
+
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }
