@@ -1,52 +1,29 @@
 
-import { Component, OnInit, inject } from '@angular/core';
-import { MatTableModule } from '@angular/material/table';
+import {
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
 
-import { ClientsServices } from '../../Services/clientes-services';
-import { Cliente } from '../../models/cliente.model';
+import { CommonModule } from '@angular/common';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-table',
   styleUrl: './table.css',
   templateUrl: './table.html',
-  imports: [MatTableModule],
+  imports: [CommonModule, MatTableModule],
 })
-export class Table implements OnInit {
+export class Table implements OnChanges {
 
-  private clientesService = inject(ClientsServices);
+  @Input() data: any[] = [];
 
-  displayedColumns: string[] = [
-    'id',
-    'nombre',
-    'apellido',
-    'edad',
-    'sexo',
-    'email'
-  ];
+  displayedColumns: string[] = [];
 
-  daticos: Cliente[] = [];
-
-  cargando = false;
-  error = '';
-
-  ngOnInit(): void {
-    this.cargarClientes();
-  }
-
-  cargarClientes(): void {
-    this.cargando = true;
-    this.error = '';
-
-    this.clientesService.getClientes().subscribe({
-      next: (clientes) => {
-        this.daticos = clientes;
-        this.cargando = false;
-      },
-      error: (error) => {
-        console.error('Error al consultar clientes:', error);
-        this.error = 'No se pudieron cargar los clientes';
-        this.cargando = false;
-      }
-    });
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['data']) {
+      this.displayedColumns = Object.keys(this.data[0] ?? {});
+    }
   }
 }

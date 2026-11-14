@@ -5,8 +5,15 @@ import { Inventario } from './view/inventario/inventario';
 import { Ventas } from './view/ventas/ventas';  
 import { Table } from './Components/table/table';
 import { MenuComponent } from './Components/menu/menu.component';
+import { Login } from './view/login/login';
 export const routes: Routes = [
+    {
+      path: 'login', 
+      component: Login
+    },
     
+    
+      
     {
         path: '',
     component: MenuComponent,

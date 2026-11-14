@@ -6,6 +6,7 @@ import productosRoutes from './routes/productos.routes';
 import inventarioRoutes from './routes/inventario.routes';
 import comprasRoutes from './routes/compras.routes';
 import ventasRoutes from './routes/ventas.routes';
+import authRoutes from './routes/auth.routes';
 
 
 const app = express(); // llama lo que se va usar
@@ -31,6 +32,7 @@ app.use('/api/v1/productos', productosRoutes);
 app.use('/api/v1/inventario', inventarioRoutes);
 app.use('/api/v1/compras', comprasRoutes);
 app.use('/api/v1/ventas', ventasRoutes);
+app.use('/api/v1/auth', authRoutes);
 
 
 export default app; // si otra clase necesista

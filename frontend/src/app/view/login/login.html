@@ -1,0 +1,40 @@
+
+<div class="login-container">
+
+  <h2>Iniciar sesión</h2>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <mat-form-field appearance="outline">
+
+      <mat-label>Correo electrónico</mat-label>
+
+      <input
+        matInput
+        type="email"
+        formControlName="email">
+
+      <mat-error>Ingresa un correo válido</mat-error>
+
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+
+      <mat-label>Contraseña</mat-label>
+
+      <input
+        matInput
+        type="password"
+        formControlName="password">
+
+      <mat-error>La contraseña es obligatoria</mat-error>
+
+    </mat-form-field>
+
+    <button mat-raised-button type="submit">
+      Iniciar sesión
+    </button>
+
+  </form>
+
+</div>
