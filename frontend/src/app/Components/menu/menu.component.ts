@@ -1,47 +1,52 @@
+
 import { Component, inject } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { shareReplay } from 'rxjs/operators';
-import { AsyncPipe } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
-import { Clientes } from '../../view/clientes/clientes';
-import { Productos } from '../../view/productos/productos';
-import { Ventas } from '../../view/ventas/ventas';
 
+import { Router, RouterOutlet } from '@angular/router';
+
+import { Observable } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.css',
   imports: [
-    MatToolbarModule, 
+    MatToolbarModule,
     MatButtonModule,
-    MatSidenavModule, 
-    MatListModule, 
-    MatIconModule, 
-    RouterOutlet, 
-    Clientes, 
-    Productos, 
-    Ventas,
-    AsyncPipe,
+    MatSidenavModule,
+    MatListModule,
+    MatIconModule,
+    RouterOutlet,
+    AsyncPipe
   ]
 })
 export class MenuComponent {
-[x: string]: any;
 
+  // DETECTAR EL TAMAÑO DE LA PANTALLA
   private breakpointObserver = inject(BreakpointObserver);
 
+  // OBTENER LA RUTA ACTUAL
+  private router = inject(Router);
+
+  // VERIFICAR SI SE ESTÁ UTILIZANDO UN CELULAR
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(
       map((result) => result.matches),
-      shareReplay()
+      shareReplay({ bufferSize: 1, refCount: true })
     );
+
+  // IDENTIFICAR QUÉ OPCIÓN DEL MENÚ ESTÁ SELECCIONADA
+  get rutaActual(): string {
+    return this.router.url.split('?')[0].split('#')[0];
+  }
 
 }

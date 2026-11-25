@@ -8,11 +8,14 @@ import {
   Validators
 } from '@angular/forms';
 
+import { HttpErrorResponse } from '@angular/common/http';
+
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { HttpErrorResponse } from '@angular/common/http';
+
+// ALERTAS
+import Swal from 'sweetalert2';
 
 import { AuthServices } from '../../Services/auth-services';
 
@@ -22,8 +25,7 @@ import { AuthServices } from '../../Services/auth-services';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule,
-    MatSnackBarModule
+    MatButtonModule
   ],
   templateUrl: './login.html',
   styleUrl: './login.css'
@@ -34,8 +36,7 @@ export class Login {
 
   constructor(
     private loginForm: FormBuilder,
-    private authService: AuthServices,
-    private snackBar: MatSnackBar
+    private authService: AuthServices
   ) {
 
     this.form = this.loginForm.group({
@@ -49,53 +50,66 @@ export class Login {
 
     // VALIDAR FORMULARIO
     if (this.form.invalid) {
+
       this.form.markAllAsTouched();
+
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        text: 'Verifica los datos del formulario',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#673AB7'
+      });
+
       return;
     }
 
-    // OBTENER VALORES DEL FORMULARIO
+    // OBTENER DATOS
     const email = this.form.controls['email'].value;
     const password = this.form.controls['password'].value;
 
-    // CONSULTAR EL SERVICIO DE AUTENTICACIÓN
+    // CONSULTAR SERVICIO DE AUTENTICACIÓN
     this.authService.login(email, password).subscribe({
 
       next: (respuesta) => {
 
-        this.snackBar.open(
-          'Inicio de sesión correcto',
-          'Cerrar',
-          {
-            duration: 4000,
-            horizontalPosition: 'right',
-            verticalPosition: 'top'
-          }
-        );
-
-        console.log('Usuario autenticado:', respuesta.usuario);
+        Swal.fire({
+          icon: 'success',
+          title: '¡Bienvenido!',
+          text: 'Inicio de sesión correcto',
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: '#673AB7'
+        });
 
       },
 
       error: (error: HttpErrorResponse) => {
 
-        const mensaje = error.status === 401
-          ? 'Correo o contraseña incorrectos'
-          : 'No se pudo iniciar sesión. Intenta nuevamente.';
+        if (error.status === 401) {
 
-        this.snackBar.open(
-          mensaje,
-          'Cerrar',
-          {
-            duration: 4000,
-            horizontalPosition: 'right',
-            verticalPosition: 'top'
-          }
-        );
+          Swal.fire({
+            icon: 'error',
+            title: 'Acceso denegado',
+            text: 'Correo o contraseña incorrectos',
+            confirmButtonText: 'Intentar nuevamente',
+            confirmButtonColor: '#673AB7'
+          });
+
+        } else {
+
+          Swal.fire({
+            icon: 'error',
+            title: 'Error de conexión',
+            text: 'No se pudo iniciar sesión. Intenta nuevamente.',
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: '#673AB7'
+          });
+
+        }
 
       }
 
     });
 
   }
-
 }

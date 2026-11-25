@@ -7,7 +7,7 @@ export interface Inventario {
   producto?: string;
   cantidad: number;
   ubicacion?: string;
-  fecha_actualizacion?: Date;
+  fecha_actualizacion?: Date | string;
 }
 
 export class InventarioModel {
@@ -18,11 +18,13 @@ export class InventarioModel {
     const resultado = await pool.query<Inventario>(`
       SELECT
         i.id,
-        i.producto_id,
         p.nombre AS producto,
         i.cantidad,
         i.ubicacion,
-        i.fecha_actualizacion
+        TO_CHAR(
+          i.fecha_actualizacion,
+          'DD/MM/YYYY HH24:MI'
+        ) AS fecha_actualizacion
       FROM inventario i
       INNER JOIN productos p
         ON p.id = i.producto_id
@@ -135,20 +137,17 @@ export class InventarioModel {
 
     return (resultado.rowCount ?? 0) > 0;
   }
-  
+
   // VERIFICAR SI UN PRODUCTO EXISTE
   static async verificarProducto(
     productoId: number
   ): Promise<boolean> {
 
-    const resultado = await pool.query(
-      `
-        SELECT id
-        FROM productos
-        WHERE id = $1::INTEGER
-      `,
-      [productoId]
-    );
+    const resultado = await pool.query(`
+      SELECT id
+      FROM productos
+      WHERE id = $1::INTEGER
+    `, [productoId]);
 
     return resultado.rows.length > 0;
   }

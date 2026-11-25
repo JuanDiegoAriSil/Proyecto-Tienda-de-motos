@@ -1,0 +1,109 @@
+
+/* CONTENEDOR DE LA TABLA */
+:host {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
+}
+
+/* TABLA GENERAL */
+table.mat-mdc-table {
+  width: 100%;
+  min-width: 650px;
+
+  background-color: #ffffff;
+  border-collapse: collapse;
+}
+
+/* ENCABEZADOS */
+th.mat-mdc-header-cell {
+  background-color: #f1f5f9;
+  color: #334155;
+
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+
+  padding: 18px 20px;
+  white-space: nowrap;
+
+  border-bottom: 2px solid #e2e8f0;
+}
+
+/* CELDAS */
+td.mat-mdc-cell {
+  color: #475569;
+  font-size: 14px;
+  font-weight: 400;
+
+  padding: 16px 20px;
+  white-space: nowrap;
+
+  border-bottom: 1px solid #f1f5f9;
+}
+
+/* FILAS ALTERNADAS */
+tr.mat-mdc-row:nth-child(even) {
+  background-color: #f8fafc;
+}
+
+/* EFECTO AL PASAR EL MOUSE */
+tr.mat-mdc-row:hover {
+  background-color: #fff7ed;
+  transition: background-color 0.2s ease;
+}
+
+/* RESALTAR PRIMERA COLUMNA */
+td.mat-mdc-cell:first-child {
+  color: #ea580c;
+  font-weight: 600;
+}
+
+/* ACENTO SUPERIOR */
+:host {
+  border-top: 3px solid #ea580c;
+}
+
+/* ÚLTIMA FILA */
+tr.mat-mdc-row:last-child td {
+  border-bottom: none;
+}
+
+/* BARRA DE DESPLAZAMIENTO */
+:host::-webkit-scrollbar {
+  height: 8px;
+}
+
+:host::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+:host::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+:host::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* PANTALLAS PEQUEÑAS */
+@media (max-width: 768px) {
+  th.mat-mdc-header-cell {
+    padding: 14px;
+    font-size: 11px;
+  }
+
+  td.mat-mdc-cell {
+    padding: 14px;
+    font-size: 13px;
+  }
+}

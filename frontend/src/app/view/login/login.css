@@ -1,0 +1,56 @@
+
+.login-container {
+  width: 100%;
+  max-width: 450px;
+  margin: 60px auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 25px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.fila-password {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.fila-password mat-form-field {
+  flex: 1;
+  min-width: 0;
+}
+
+button {
+  height: 48px;
+  margin-top: 4px;
+  white-space: nowrap;
+}
+
+/* Adaptación para celulares */
+@media (max-width: 480px) {
+
+  .fila-password {
+    flex-direction: column;
+  }
+
+  .fila-password mat-form-field {
+    width: 100%;
+  }
+
+  button {
+    width: 100%;
+  }
+}

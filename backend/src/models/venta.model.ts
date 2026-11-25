@@ -30,10 +30,8 @@ export class VentaModel {
     const resultado = await pool.query(`
       SELECT
         v.id,
-        v.cliente_id,
-        c.nombre AS cliente_nombre,
-        c.apellido AS cliente_apellido,
-        v.fecha_venta,
+        CONCAT_WS(' ', c.nombre, c.apellido) AS cliente,
+        TO_CHAR(v.fecha_venta, 'DD/MM/YYYY HH24:MI') AS fecha_venta,
         v.total
       FROM ventas v
       INNER JOIN clientes c
@@ -88,7 +86,7 @@ export class VentaModel {
   // REGISTRAR VENTA Y DESCONTAR INVENTARIO
   static async crear(datos: NuevaVenta) {
 
-    // Validar también desde el modelo
+    // VALIDAR DATOS
     if (
       !Number.isInteger(datos?.cliente_id) ||
       datos.cliente_id <= 0 ||
@@ -163,7 +161,7 @@ export class VentaModel {
         );
       }
 
-      // ORDENAR PRODUCTOS PARA BLOQUEO CONSISTENTE
+      // ORDENAR PRODUCTOS
       const productos = [...datos.productos].sort(
         (a, b) => a.producto_id - b.producto_id
       );
@@ -295,7 +293,7 @@ export class VentaModel {
 
     } catch (error) {
 
-      // REVERTIR CAMBIOS SI FALLA LA VENTA
+      // REVERTIR CAMBIOS
       await client.query('ROLLBACK');
 
       throw error;
@@ -307,8 +305,6 @@ export class VentaModel {
 
     }
   }
-
-  // GUARDAR DETALLE DE VENTA
 
   // GUARDAR DETALLE DE VENTA
   private static async crearDetalle(
@@ -356,6 +352,5 @@ export class VentaModel {
         'No se pudo registrar el detalle de la venta'
       );
     }
-
   }
 }

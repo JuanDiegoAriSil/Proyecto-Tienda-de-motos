@@ -5,35 +5,58 @@
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
+    <!-- CORREO -->
     <mat-form-field appearance="outline">
 
-      <mat-label>Correo electrónico</mat-label>
+      <mat-label>Usuario</mat-label>
 
       <input
         matInput
         type="email"
         formControlName="email">
 
-      <mat-error>Ingresa un correo válido</mat-error>
+      <mat-error>
+        @if (form.controls['email'].hasError('required')) {
+          El usuario es obligatorio
+        } @else if (form.controls['email'].hasError('email')) {
+          Ingresa un correo válido
+        }
+      </mat-error>
 
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
+    <!-- CONTRASEÑA -->
+    <div class="fila-password">
 
-      <mat-label>Contraseña</mat-label>
+      <mat-form-field appearance="outline">
 
-      <input
-        matInput
-        type="password"
-        formControlName="password">
+        <mat-label>Contraseña</mat-label>
 
-      <mat-error>La contraseña es obligatoria</mat-error>
+        <input
+          matInput
+          type="password"
+          formControlName="password">
 
-    </mat-form-field>
+        <mat-error>
+          @if (form.controls['password'].hasError('required')) {
+            La contraseña es obligatoria
+          } @else if (form.controls['password'].hasError('credenciales')) {
+            Correo o contraseña incorrectos
+          }
+        </mat-error>
 
-    <button mat-raised-button type="submit">
-      Iniciar sesión
-    </button>
+      </mat-form-field>
+
+      <!-- BOTÓN -->
+      <button
+        mat-flat-button
+        type="submit">
+
+        Iniciar sesión
+
+      </button>
+
+    </div>
 
   </form>
 

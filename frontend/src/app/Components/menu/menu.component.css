@@ -1,17 +1,101 @@
+
+/* CONTENEDOR PRINCIPAL */
 .sidenav-container {
-  height: 100%;
+  height: 100vh;
+  background-color: #f1f5f9;
 }
 
+/* MENÚ LATERAL */
 .sidenav {
-  width: 200px;
+  width: 250px;
+  background-color: #0f172a;
+  border-radius: 0;
+  border: none;
 }
 
+/* LOGO Y TÍTULO */
 .sidenav .mat-toolbar {
-  background: inherit;
+  background-color: #0f172a;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 600;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.mat-toolbar.mat-primary {
+.logo mat-icon {
+  color: #f97316;
+}
+
+/* TEXTO ADMINISTRACIÓN */
+.menu-title {
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  margin: 25px 20px 10px;
+}
+
+/* LISTA DE NAVEGACIÓN */
+mat-nav-list {
+  padding: 10px;
+}
+
+mat-nav-list a {
+  margin-bottom: 8px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+
+  --mat-list-list-item-label-text-color: #cbd5e1;
+  --mat-list-list-item-leading-icon-color: #94a3b8;
+}
+
+/* EFECTO AL PASAR EL MOUSE */
+mat-nav-list a:hover {
+  background-color: #1e293b;
+}
+
+/* OPCIÓN SELECCIONADA */
+mat-nav-list a.active {
+  background-color: #ea580c;
+
+  --mat-list-list-item-label-text-color: #ffffff;
+  --mat-list-list-item-leading-icon-color: #ffffff;
+}
+
+/* BARRA SUPERIOR */
+.toolbar {
+  background-color: #ffffff;
+  color: #0f172a;
+  height: 70px;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 20px;
+  font-weight: 500;
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 10;
+}
+
+/* ÁREA DONDE APARECEN CLIENTES,
+   PRODUCTOS, VENTAS E INVENTARIO */
+.contenido {
+  padding: 25px;
+  min-height: calc(100vh - 70px);
+}
+
+/* ADAPTACIÓN PARA CELULARES */
+@media (max-width: 768px) {
+  .sidenav {
+    width: 240px;
+  }
+
+  .contenido {
+    padding: 15px;
+  }
+
+  .toolbar {
+    font-size: 17px;
+  }
 }

@@ -8,16 +8,26 @@ export interface Cliente {
   edad?: number;
   sexo?: string;
   email: string;
-  fecha_creacion?: Date;
+  fecha_creacion?: Date | string;
 }
 
 export class ClienteModel {
 
   // CONSULTAR TODOS LOS CLIENTES
   static async obtenerTodos(): Promise<Cliente[]> {
-    const resultado = await pool.query<Cliente>(
-      'SELECT * FROM clientes ORDER BY id ASC'
-    );
+
+    const resultado = await pool.query<Cliente>(`
+      SELECT
+        id,
+        nombre,
+        apellido,
+        edad,
+        sexo,
+        email,
+        TO_CHAR(fecha_creacion, 'DD/MM/YYYY HH24:MI') AS fecha_creacion
+      FROM clientes
+      ORDER BY id ASC
+    `);
 
     return resultado.rows;
   }

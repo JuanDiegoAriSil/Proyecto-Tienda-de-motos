@@ -8,7 +8,7 @@ export interface Producto {
   marca: string;
   categoria: string;
   precio: number;
-  fecha_creacion?: Date;
+  fecha_creacion?: Date | string;
 }
 
 export class ProductoModel {
@@ -16,9 +16,18 @@ export class ProductoModel {
   // CONSULTAR TODOS LOS PRODUCTOS
   static async obtenerTodos(): Promise<Producto[]> {
 
-    const resultado = await pool.query<Producto>(
-      'SELECT * FROM productos ORDER BY id ASC'
-    );
+    const resultado = await pool.query<Producto>(`
+      SELECT
+        id,
+        nombre,
+        descripcion,
+        marca,
+        categoria,
+        precio,
+        TO_CHAR(fecha_creacion, 'DD/MM/YYYY HH24:MI') AS fecha_creacion
+      FROM productos
+      ORDER BY id ASC
+    `);
 
     return resultado.rows;
   }

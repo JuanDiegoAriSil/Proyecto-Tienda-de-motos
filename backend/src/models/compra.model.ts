@@ -7,16 +7,25 @@ export interface Compra {
   cantidad: number;
   proveedor: string;
   precio_unitario: number;
-  fecha_compra?: Date;
+  fecha_compra?: Date | string;
 }
 
 export class CompraModel {
 
   // CONSULTAR TODAS LAS COMPRAS
   static async obtenerTodos(): Promise<Compra[]> {
-    const resultado = await pool.query<Compra>(
-      'SELECT * FROM compras ORDER BY id ASC'
-    );
+
+    const resultado = await pool.query<Compra>(`
+      SELECT
+        id,
+        producto,
+        cantidad,
+        proveedor,
+        precio_unitario,
+        TO_CHAR(fecha_compra, 'DD/MM/YYYY HH24:MI') AS fecha_compra
+      FROM compras
+      ORDER BY id ASC
+    `);
 
     return resultado.rows;
   }
